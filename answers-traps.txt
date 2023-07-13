@@ -1,0 +1,40 @@
+1. ***Which registers contain arguments to functions? For example, which register holds 13 in main's call to `printf`?***
+
+   函数参数存储在寄存器a0~a7中，例如main函数的`printf`中的13寄存在a2寄存器中。
+
+2. ***Where is the call to function `f` in the assembly code for main? Where is the call to `g`? (Hint: the compiler may inline functions.)***
+
+   没有这样的代码。 `g`被内联inline到 f(x) 中，然后 `f`又被进一步内联到 `main`中。
+
+3. ***At what address is the function `printf` located?***
+
+   0x0000000000000628, main 中使用 pc 相对寻址来计算得到这个地址。
+
+4. ***What value is in the register `ra` just after the `jalr` to `printf` in `main`?***
+
+   0x0000000000000038, jalr 指令的下一条汇编指令的地址。
+
+5. ***Run the following code.***
+
+   ```C
+   	unsigned int i = 0x00646c72;
+   	printf("H%x Wo%s", 57616, &i);
+   ```
+
+   ***What is the output? [Here's an ASCII table](https://www.asciitable.com/) that maps bytes to characters.***
+
+   ***The output depends on that fact that the RISC-V is little-endian. If the RISC-V were instead big-endian what would you set to in order to yield the same output? Would you need to change to a different value?`***
+
+   `HE110 World`；
+
+   需要将`unsigned int i = 0x00646c72;`替换成`unsigned int i = 0x00726c64;`
+
+   不需要，57616 的十六进制是 110，无论端序（十六进制和内存中的表示不是同个概念）
+
+6. ***In the following code, what is going to be printed after ? (note: the answer is not a specific value.) Why does this happen? `'y='`***
+
+   ```C
+   	printf("x=%d y=%d", 3);
+   ```
+
+   输出的是一个受调用前的代码影响的“随机”的值。因为 printf 尝试读的参数数量比提供的参数数量多。 第二个参数 `3` 通过 a1 传递，而第三个参数对应的寄存器 a2 在调用前不会被设置为任何具体的值，而是会 包含调用发生前的任何已经在里面的值。
