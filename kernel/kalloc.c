@@ -81,6 +81,7 @@ kalloc(void)
   return (void*)r;
 }
 
+//Calculate the free memory
 uint64 
 acquire_freemem(){
   struct run *r;

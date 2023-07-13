@@ -114,7 +114,7 @@ sys_trace(void)
 
 //Add a sys_sysinfo() function in kernel/sysproc.c
 uint64
-sys_sysinfo()
+sys_sysinfo(void)
 {
   struct sysinfo info;
   uint64 addr;
