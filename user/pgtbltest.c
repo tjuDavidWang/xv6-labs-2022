@@ -56,6 +56,7 @@ pgaccess_test()
   printf("pgaccess_test starting\n");
   testname = "pgaccess_test";
   buf = malloc(32 * PGSIZE);
+  //需要实现函数：pgaccess(起始地址,查找页数,位图地址)
   if (pgaccess(buf, 32, &abits) < 0)
     err("pgaccess failed");
   buf[PGSIZE * 1] += 1;
