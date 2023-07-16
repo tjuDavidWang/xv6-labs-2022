@@ -1,58 +1,72 @@
-// Lab Xv6 and Unix utilities
-// xargs.c
-
 #include "kernel/types.h"
+#include "kernel/stat.h"
 #include "user/user.h"
-#include "kernel/param.h"
-#define MAX_LEN 100
+//读取shell中一行命令
+char* readline() {
+    char* buf = malloc(100);
+    char* p = buf;
+    while(read(0, p, 1) != 0){
+        if(*p == '\n' || *p == '\0'){
+            *p = '\0';
+            return buf;
+        }
+        p++;
+    }
+    if(p != buf) return buf;
+    free(buf);
+    return 0;
+}
+int
+main(int argc, char *argv[]){
+    if(argc < 2) {
+        fprintf(2,"Please input the option\n");
+        exit(-1);
+    }
+    //复制参数值
+    char* argvs[32];//存储多个命令参
+    char** p_argvs = argvs;
+    char** p_argv = argv+1;//除去命令名称自身值
+    while(*p_argv != 0){
+        *(p_argvs++) = *(p_argv++);
+    }
 
-int main(int argc, char *argv[]) {
-	char *cmd = argv[1];
-	char buf;
-	char paramv[MAXARG][MAX_LEN]; 
-	char *new_argv[MAXARG];
+  
+    while(1){
+        char* p_line= readline();
+        if(p_line==0){
+            break;
+        }
 
-	while (1) {
-		int count = argc-1;  
-		memset(paramv, 0, MAXARG * MAX_LEN);
-        // 将xargs后面的参数复制到paramv中
-		for (int i=1; i<argc; i++) {
-			strcpy(paramv[i-1], argv[i]);
-		}
-
-		int ptr = 0; //
-		int flag = 0; 
-		int read_result;
-        //读取参数直至末尾，一次读取一个字符
-		while (((read_result = read(0, &buf, 1))) > 0 && buf != '\n') {
-            //遇到空格，参数个数+1
-			if (buf == ' ' && flag == 1) {
-				count++;
-				ptr = 0;
-				flag = 0;
-			}
-			else if (buf != ' ') {
-				paramv[count][ptr++] = buf;
-				flag = 1;
-			}
-		}
-		// 处理EOF和\n的情况
-		if (read_result <= 0) {
-			break;
-		}
-		for (int i=0; i<MAXARG-1; i++) {
-			new_argv[i] = paramv[i];
-		}
-        //添加NULL，表示数组结束
-		new_argv[MAXARG-1] = '\0';
-
-        //建立子进程处理指令
-		if (fork() == 0) {
-			exec(cmd, new_argv);
-			exit(0);
-		} else {
-			wait((int *) 0);
-		}
-	}
-	exit(0);
+        char* buf = malloc(36);
+        char* bh = buf;
+        int nargc = argc - 1;//除去命令名称自身
+        while(*p_line != 0){
+            //取参
+            if(*p_line == ' ' && buf != bh){
+                //若到达末尾且长度不为0
+                *bh = 0;
+                argvs[nargc] = buf;
+                buf = malloc(36);
+                bh = buf;
+                nargc++;
+            }else{
+                *bh = *p_line;
+                bh++;
+            }
+            p_line++;
+        }
+        if(buf != bh){
+            argvs[nargc] = buf;
+            nargc++;
+        }
+        argvs[nargc] = 0;
+        int pid = fork();
+        if(pid == 0){
+            // printf("%s %s\n", argvs[0], argvs[1]);
+            exec(argvs[0], argvs);
+        }else{
+            wait(0);
+        }
+    }
+    exit(0);
 }

@@ -1,21 +1,24 @@
-// Lab Xv6 and Unix utilities
-// sleep.c
-
 #include "kernel/types.h"
-#include "user/user.h" 
+#include "kernel/stat.h"
+#include "user/user.h"
 
-int main(int argc, char *argv[]) {
-    // If the number of command-line arguments is not equal to 2, print an error message
-    if (argc != 2) { 
-        // write(int fd, char *buf, int n) 
-        write(2, "Usage: sleep time\n", strlen("Usage: sleep time\n")); 
-        exit(-1); 
+int 
+main(int argc,char *argv[]){
+    if(argc<=1){
+        fprintf(2,"error:Please input the ticks you want to sleep ");
     }
-    // Convert the string argument to an integer
-    int time = atoi(argv[1]); 
-    if(sleep(time)<0){
-        write(2, "Cannot sleep!\n", strlen("Cannot sleep!\n")); 
-        exit(-1);
-    } 
-    exit(0); 
+    else if(argc==2){
+        int time=atoi(argv[1]);
+        if(time<=0){
+            fprintf(2,"error:Please input valid time");
+        }
+        else{
+            sleep(time);
+            exit(0);
+        }
+    }
+    else{
+        fprintf(2,"error:Please input no more than one time value");
+    }
+    exit(1);
 }
