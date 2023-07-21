@@ -5,12 +5,12 @@
 int 
 main(int argc,char *argv[]){
     if(argc<=1){
-        fprintf(2,"error:Please input the ticks you want to sleep ");
+        fprintf(2,"error:Please input the ticks you want to sleep \n");
     }
     else if(argc==2){
         int time=atoi(argv[1]);
         if(time<=0){
-            fprintf(2,"error:Please input valid time");
+            fprintf(2,"error:Please input valid time\n");
         }
         else{
             sleep(time);
@@ -18,7 +18,7 @@ main(int argc,char *argv[]){
         }
     }
     else{
-        fprintf(2,"error:Please input no more than one time value");
+        fprintf(2,"error:Please input no more than one time value\n");
     }
     exit(1);
 }
