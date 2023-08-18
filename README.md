@@ -26,6 +26,6 @@
 
 视频教程：[https://www.bilibili.com/video/BV1Qi4y1o7tN/?spm_id_from=333.788&vd_source=54848bbaacc95a6670b0f8ac0228b019](https://www.bilibili.com/video/BV1Qi4y1o7tN/?spm_id_from=333.788&vd_source=54848bbaacc95a6670b0f8ac0228b019)
 
-## 实验报告
+## 实验报告及PPT
 
-等后期整理好后再一并push上来
+见main分支中的文件
