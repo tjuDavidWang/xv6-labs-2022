@@ -26,6 +26,10 @@
 
 视频教程：[https://www.bilibili.com/video/BV1Qi4y1o7tN/?spm_id_from=333.788&vd_source=54848bbaacc95a6670b0f8ac0228b019](https://www.bilibili.com/video/BV1Qi4y1o7tN/?spm_id_from=333.788&vd_source=54848bbaacc95a6670b0f8ac0228b019)
 
+个人博客：[https://wwd.zeabur.app/article/homework:os_xv6](https://wwd.zeabur.app/article/homework:os_xv6)
+
 ## 实验报告及PPT
 
 见main分支中的文件
+
+![image](https://github.com/tjuDavidWang/xv6-labs-2022/blob/main/ppt.png)
